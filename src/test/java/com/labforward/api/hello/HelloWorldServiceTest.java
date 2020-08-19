@@ -55,7 +55,7 @@ public class HelloWorldServiceTest {
 	@Test(expected = EntityValidationException.class)
 	public void updateGreetingWhenMessageIsNull() {
 		Greeting request = new Greeting();
-		helloService.updateGreeting(request);
+		helloService.updateGreeting(null, request);
 	}
 
 	@Test(expected = EntityValidationException.class)
@@ -80,7 +80,7 @@ public class HelloWorldServiceTest {
 		Greeting created = helloService.createGreeting(request);
 		final String UPDATE_HELLO_LUKE = "Update Hello Luke";
 		created.setMessage(UPDATE_HELLO_LUKE);
-		Optional<Greeting> updated = helloService.updateGreeting(created);
+		Optional<Greeting> updated = helloService.updateGreeting(created.getId(), created);
 		Assert.assertTrue(updated.isPresent());
 		Assert.assertEquals(updated.get().getId(), created.getId());
 		Assert.assertEquals(UPDATE_HELLO_LUKE, updated.get().getMessage());

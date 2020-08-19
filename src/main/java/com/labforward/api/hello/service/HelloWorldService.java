@@ -8,7 +8,7 @@ public interface HelloWorldService {
 
     Greeting createGreeting(Greeting request);
 
-    Optional<Greeting> updateGreeting(Greeting request);
+    Optional<Greeting> updateGreeting(String id, Greeting request);
 
     Optional<Greeting> getGreeting(String id);
 

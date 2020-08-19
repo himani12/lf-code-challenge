@@ -1,5 +1,6 @@
 package com.labforward.api.hello.controller;
 
+import com.labforward.api.core.creation.EntityCreatedResponse;
 import com.labforward.api.core.exception.ResourceNotFoundException;
 import com.labforward.api.hello.domain.Greeting;
 import com.labforward.api.hello.service.HelloWorldService;
@@ -9,6 +10,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static com.labforward.api.hello.constants.Messages.DEFAULT_ID;
 import static com.labforward.api.hello.constants.Messages.GREETING_NOT_FOUND;
@@ -48,17 +52,18 @@ public class HelloController {
 	@ApiOperation(value = "Create greeting.", response = Greeting.class)
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public Greeting createGreeting(@RequestBody Greeting request) {
-		return helloWorldService.createGreeting(request);
+	public EntityCreatedResponse createGreeting(@RequestBody Greeting request) throws URISyntaxException {
+		Greeting greeting = helloWorldService.createGreeting(request);
+		return new EntityCreatedResponse<>(greeting, new URI("/hello/".concat(greeting.getId())));
 	}
 
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 422, message = "Bad Request") })
 	@ApiOperation(value = "Update existing greeting.", response = Greeting.class)
 	@ResponseStatus(HttpStatus.OK)
-	@PutMapping
-	public Greeting updateGreeting(@RequestBody Greeting request) {
-		return helloWorldService.updateGreeting(request)
+	@PatchMapping("/{id}")
+	public Greeting updateGreeting(@PathVariable String id, @RequestBody Greeting request) {
+		return helloWorldService.updateGreeting(id, request)
 				.orElseThrow(() -> new ResourceNotFoundException(GREETING_NOT_FOUND));
 	}
 
@@ -66,7 +71,7 @@ public class HelloController {
 			@ApiResponse(code = 422, message = "Bad Request") })
 	@ApiOperation(value = "Delete greeting.", response = Greeting.class)
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	@DeleteMapping(value = "{id}")
+	@DeleteMapping("/{id}")
 	public void deleteGreeting(@PathVariable String id) {
 		helloWorldService.deleteGreeting(id);
 	}

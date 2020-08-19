@@ -15,23 +15,28 @@ import javax.validation.Validator;
 @Configuration
 public class ValidationConfig {
 
-	@Bean
-	@Autowired
-	public EntityValidator preconditionValidator(MessageSource messageSource) {
-		SpringValidatorAdapter springValidator = springValidatorAdapter(messageSource);
+	private MessageSource messageSource;
 
+	@Autowired
+	public ValidationConfig(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+
+	@Bean
+	public EntityValidator preconditionValidator() {
+		SpringValidatorAdapter springValidator = springValidatorAdapter();
 		return new EntityValidator(springValidator);
 	}
 
 	@Bean
-	public SpringValidatorAdapter springValidatorAdapter(MessageSource messageSource) {
-		Validator localValidator = localValidatorFactoryBean(messageSource);
+	public SpringValidatorAdapter springValidatorAdapter() {
+		Validator localValidator = localValidatorFactoryBean();
 
 		return new SpringValidatorAdapter(localValidator);
 	}
 
 	@Bean
-	public Validator localValidatorFactoryBean(MessageSource messageSource) {
+	public Validator localValidatorFactoryBean() {
 		LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
 
 		// use the application message bundle for validation messages

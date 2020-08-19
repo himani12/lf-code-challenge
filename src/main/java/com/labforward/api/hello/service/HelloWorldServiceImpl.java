@@ -42,14 +42,13 @@ public class HelloWorldServiceImpl implements HelloWorldService{
      * @return Optional with modified greeting if the update was successful or empty if else
      */
     @Override
-    public Optional<Greeting> updateGreeting(Greeting request) {
-        entityValidator.validateUpdate(request.getId(), request);
-        Greeting greeting = greetings.get(request.getId());
-        if (greeting == null) {
-            return Optional.empty();
-        }
-        save(request);
-        return Optional.of(greetings.get(request.getId()));
+    public Optional<Greeting> updateGreeting(String id, Greeting request) {
+        entityValidator.validateUpdate(id, request);
+        Greeting greeting = this.greetings.computeIfPresent(id, (k, v) -> {
+            v.setMessage(request.getMessage());
+            return v;
+        });
+        return greeting != null ? Optional.of(greeting) : Optional.empty();
     }
 
     /**

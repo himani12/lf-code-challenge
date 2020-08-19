@@ -108,7 +108,7 @@ public class HelloControllerTest extends MVCIntegrationTest {
 		savedGreeting.setMessage(updatedMessage);
 		final String updatedRequestBody = getGreetingBody(savedGreeting);
 
-		mockMvc.perform(put("/hello")
+		mockMvc.perform(patch("/hello/" + savedGreeting.getId())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(updatedRequestBody))
 				.andExpect(status().isOk())
@@ -118,7 +118,7 @@ public class HelloControllerTest extends MVCIntegrationTest {
 	@Test
 	public void UpdateReturnsBadRequestWhenIdAndMessageMissing() throws Exception {
 		String body = "{}";
-		mockMvc.perform(put("/hello/")
+		mockMvc.perform(patch("/hello/123")
 				.content(body)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnprocessableEntity())
