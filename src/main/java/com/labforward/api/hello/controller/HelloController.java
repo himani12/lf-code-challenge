@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import static com.labforward.api.hello.constants.Messages.DEFAULT_ID;
 import static com.labforward.api.hello.constants.Messages.GREETING_NOT_FOUND;
@@ -45,6 +46,15 @@ public class HelloController {
 	public Greeting getGreeting(@PathVariable String id) {
 		return helloWorldService.getGreeting(id)
 				.orElseThrow(() -> new ResourceNotFoundException(GREETING_NOT_FOUND));
+	}
+
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 404, message = "No Greetings Found.") })
+	@ApiOperation(value = "Get greetings.", response = Greeting.class)
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/all")
+	@ResponseBody
+	public List<Greeting> getGreetings() {
+		return helloWorldService.getGreetings();
 	}
 
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created"),

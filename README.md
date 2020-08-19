@@ -9,7 +9,7 @@ I have listed all the changes and enhancements below. I spent 7-8 hours analyzin
 ## Definition of Done
 1. Implement the required update endpoint.
 2. Add required test cases for each of CRUD functionality (Update and Delete) for controller and service.
-3. Add delete endpoint to the application.
+3. Add delete endpoint and fetch all greetings to the application.
 4. Refactor the existing code by adding some classes and interfaces and remove some line of code to make the code dry.
 5. Add Swagger UI as part of UI or as a documentation.
 6. RequestAcceptContentTypeInterceptor was not being used, so I have implemented the WebConfig class implementing WebMvcConfigurer so I could add Interceptor.

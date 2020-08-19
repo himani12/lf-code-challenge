@@ -5,10 +5,7 @@ import com.labforward.api.core.validation.EntityValidator;
 import com.labforward.api.hello.domain.Greeting;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.labforward.api.hello.constants.Messages.*;
 
@@ -78,6 +75,17 @@ public class HelloWorldServiceImpl implements HelloWorldService{
         }
 
         return Optional.of(greeting);
+    }
+
+    /**
+     * Return all greetings
+     */
+    @Override
+    public List<Greeting> getGreetings() {
+        if (greetings.isEmpty()) {
+            throw new ResourceNotFoundException(GREETING_NOT_FOUND);
+        }
+        return new ArrayList<>(greetings.values());
     }
 
     private static Greeting getDefault() {

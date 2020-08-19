@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -74,6 +75,15 @@ public class HelloWorldServiceTest {
 		Optional<Greeting> retreived = helloService.getGreeting(UUID.randomUUID().toString());
 		Assert.assertFalse(retreived.isPresent());
 	}
+
+	@Test
+	public void getGreeingsWhenGreetingsNotPresent() {
+		List<Greeting> greetings = helloService.getGreetings();
+		//for default greeting
+		Assert.assertTrue(greetings.size() == 1);
+	}
+
+
 	@Test
 	public void updateGreetingOKWhenValidRequest() {
 		Greeting request = new Greeting(MESSAGE);
