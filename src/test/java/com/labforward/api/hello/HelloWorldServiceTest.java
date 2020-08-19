@@ -41,6 +41,7 @@ public class HelloWorldServiceTest {
 		helloService.createGreeting(new Greeting(null));
 	}
 
+
 	@Test
 	public void createGreetingOKWhenValidRequest() {
 		final String HELLO_LUKE = "Hello Luke";
